@@ -32,15 +32,27 @@ class Man {
     }
 
     flight() {
-        if ((0 < this.x + this.vx) && (this.width + this.x + this.vx < field.width)) {
+        if (this.x + this.vx - this.lineWidth < 0) {
+            this.x = this.lineWidth + 1;
+        } else if (this.width + this.x + this.vx + this.lineWidth > field.width) {
+            this.x = field.width - this.width - this.lineWidth;
+        } else {
             this.x += this.vx;
         }
-        if ((0 < this.y + this.vy) && (this.height + this.y + this.vy < field.height)) {
+
+        if (this.y + this.vy - this.lineWidth < 0) {
+            this.y = this.lineWidth + 1;
+        } else if (this.height + this.y + this.vy + this.lineWidth > field.height) {
+            this.y = field.height - this.height - this.lineWidth;
+        } else {
             this.y += this.vy;
-        }
+        } 
     }
 
     bringIntoTheWorld() {
         return null;
     }
 }
+
+Petya = new Man(100, 100, -3, -2);
+Petya.comeIntoTheWorld();
