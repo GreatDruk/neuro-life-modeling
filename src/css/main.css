@@ -8,5 +8,6 @@ html, body {
 }
 
 .field {
+    display: block;
     background-color: #07860d;
 }
