@@ -26,7 +26,7 @@ class Man {
         ctx.lineWidth = this.lineWidth;
 
         ctx.beginPath();
-        ctx.roundRect(this.x, this.y, this.width, this.height, this.round)
+        ctx.roundRect(this.x, this.y, this.width, this.height, this.round);
         ctx.fill();
         ctx.stroke();
     }
