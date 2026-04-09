@@ -6,8 +6,20 @@ html, body {
     overflow: hidden;
     background-color: #FFFFFF;
 }
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+}
 
 .field {
-    display: block;
+    z-index: 1;
     background-color: #07860d;
+}
+.items {
+    z-index: 2;
+}
+.entity {
+    z-index: 3;
 }
