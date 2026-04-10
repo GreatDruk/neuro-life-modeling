@@ -31,4 +31,3 @@ class Food {
         ctxItems.stroke();
     }
 }
-
