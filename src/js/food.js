@@ -31,3 +31,12 @@ class Food {
         ctxItems.stroke();
     }
 }
+
+function spawnFood(minFoodValue, maxFoodValue) {
+    let x = getRandomInt(margin, items.width - margin);
+    let y = getRandomInt(margin, items.height - margin);
+    let foodValue = getRandomInt(minFoodValue, maxFoodValue);
+
+    let food = new Food(x, y, foodValue);
+    food.spawn();
+}

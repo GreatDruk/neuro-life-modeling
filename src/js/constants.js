@@ -15,3 +15,9 @@ const initNumFoods = 50;
 const margin = 20;
 const initMinFoodValue = 300;
 const initMaxFoodValue = 1000;
+
+let minFoodValue = initMinFoodValue;
+let maxFoodValue = initMaxFoodValue;
+
+let frameCnt = 0;
+const foodSpawnPeriod = 180;

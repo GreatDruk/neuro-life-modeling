@@ -39,8 +39,8 @@ function generateWorld(
     }
 
     for (let i = 0; i < numFoods; i++) {
-        let x = getRandomInt(margin, entity.width - margin);
-        let y = getRandomInt(margin, entity.height - margin);
+        let x = getRandomInt(margin, items.width - margin);
+        let y = getRandomInt(margin, items.height - margin);
         let foodValue = getRandomInt(minFoodValue, maxFoodValue);
 
         let food = new Food(x, y, foodValue);
@@ -58,6 +58,12 @@ generateWorld(
 
 function startThePassageOfTime() {
     ctxEntity.clearRect(0, 0, entity.width, entity.height);
+
+    frameCnt++;
+    if (frameCnt == foodSpawnPeriod) {
+        frameCnt = 0;
+        spawnFood(minFoodValue, maxFoodValue);
+    }
 
     population = population.filter(man => man.isAlive);
 
