@@ -11,18 +11,6 @@ function resizeCanvases() {
     redrawItems();
 }
 
-const field = document.getElementById('field');
-const ctxField = field.getContext("2d");
-
-const items = document.getElementById('items');
-const ctxItems = items.getContext("2d");
-
-const entity = document.getElementById('entity');
-const ctxEntity = entity.getContext("2d");
-
-let population = [];
-const foods = [];
-
 resizeCanvases();
 window.addEventListener('resize', resizeCanvases);
 
@@ -39,19 +27,21 @@ function getRandomInt(a, b) {
     return Math.floor(a + Math.random() * (b - a + 1)); 
 }
 
-function generateWorld(populationSize, numFoods) {
+function generateWorld(
+    populationSize, numFoods, minFoodValue, maxFoodValue
+) {
     for (let i = 0; i < populationSize; i++) {
-        let x = getRandomInt(20, entity.width - 20);
-        let y = getRandomInt(20, entity.height - 20);
+        let x = getRandomInt(margin, entity.width - margin);
+        let y = getRandomInt(margin, entity.height - margin);
 
         let man = new Man(x, y);
         man.comeIntoTheWorld();
     }
 
     for (let i = 0; i < numFoods; i++) {
-        let x = getRandomInt(20, entity.width - 20);
-        let y = getRandomInt(20, entity.height - 20);
-        let foodValue = getRandomInt(300, 1000);
+        let x = getRandomInt(margin, entity.width - margin);
+        let y = getRandomInt(margin, entity.height - margin);
+        let foodValue = getRandomInt(minFoodValue, maxFoodValue);
 
         let food = new Food(x, y, foodValue);
         foods.push(food);
@@ -60,7 +50,10 @@ function generateWorld(populationSize, numFoods) {
     redrawItems();
 }
 
-generateWorld(5, 50);
+generateWorld(
+    initPopulationSize, initNumFoods,
+    initMinFoodValue, initMaxFoodValue
+);
 
 
 function startThePassageOfTime() {
