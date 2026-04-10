@@ -32,6 +32,8 @@ function redrawItems() {
 function startThePassageOfTime() {
     ctxEntity.clearRect(0, 0, entity.width, entity.height);
 
+    population = population.filter(man => man.isAlive);
+
     population.forEach(man => {
         man.flight();
         man.searchForFood();
@@ -41,7 +43,7 @@ function startThePassageOfTime() {
     requestAnimationFrame(startThePassageOfTime);
 }
 
-const population = [];
+let population = [];
 const foods = [];
 
 startThePassageOfTime();

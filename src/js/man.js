@@ -1,12 +1,17 @@
 class Man {
     constructor(
-        x=10, y=10, vx=0, vy=0, width=15, height=25, round=5,
+        x=10, y=10, vx=0, vy=0,
+        energy=700, movementEnergyCost=1,
+        width=15, height=25, round=5,
         lineWidth=1, fillColor="#8c00a9", strokeColor="#000"
     ) {
+        this.isAlive = true;
         this.x = x;
         this.y = y;
         this.vx = vx;
         this.vy = vy;
+        this.energy = energy;
+        this.movementEnergyCost = movementEnergyCost;
 
         this.width = width;
         this.height = height;
@@ -46,7 +51,12 @@ class Man {
             this.y = entity.height - this.height - this.lineWidth;
         } else {
             this.y += this.vy;
-        } 
+        }
+
+        this.energy -= this.movementEnergyCost;
+        if (this.energy < 0) {
+            this.goOutOfTheWorld();
+        }
     }
 
     searchForFood() {
@@ -74,11 +84,16 @@ class Man {
     }
 
     eat(index) {
+        this.energy += foods[index].foodValue;
         foods.splice(index, 1);
         redrawItems();
     }
 
     bringIntoTheWorld() {
         return null;
+    }
+
+    goOutOfTheWorld() {
+        this.isAlive = false;
     }
 }
