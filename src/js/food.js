@@ -1,10 +1,12 @@
 class Food {
     constructor(
-        x=10, y=10, width=15, height=15, round=10,
-        lineWidth=1, fillColor="#f10c0c", strokeColor="#000"
+        x=10, y=10, foodValue=500, width=15, height=15, round=10,
+        lineWidth=1, fillColor="#f10c0c", strokeColor="#000",
     ) {
         this.x = x;
         this.y = y;
+        this.foodValue = foodValue;
+
         this.width = width;
         this.height = height;
         this.round = round;
@@ -29,3 +31,4 @@ class Food {
         ctxItems.stroke();
     }
 }
+
