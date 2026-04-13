@@ -127,7 +127,7 @@ class Man {
             this.closestFoodX = closestFoodX;
             this.closestFoodY = closestFoodY;
 
-            if (minDist < 1.5 * foods[closestFoodInd].width) {
+            if (2 * minDist < 2 + this.height + foods[closestFoodInd].width) {
                 this.eat(closestFoodInd); 
             }
         }
