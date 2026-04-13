@@ -1,7 +1,8 @@
 class Man {
     constructor(
         x=10, y=10, vx=0, vy=0, maxVx=1, maxVy=1,
-        weights=null, energy=800, movementEnergyCost=1, threshold=1500,
+        weights=null, energy=800, movementEnergyCost=1,
+        threshold=1500, mutationRate=0.1,
         width=15, height=25, round=5,
         lineWidth=1, fillColor="#8c00a9", strokeColor="#000"
     ) {
@@ -23,6 +24,7 @@ class Man {
         this.energy = energy;
         this.movementEnergyCost = movementEnergyCost;
         this.threshold = threshold;
+        this.mutationRate = mutationRate;
 
         this.width = width;
         this.height = height;
@@ -56,6 +58,10 @@ class Man {
         this.vy = decision[1] * this.maxVy;
 
         this.flight();
+
+        if (this.energy > this.threshold) {
+            this.bringIntoTheWorld();
+        }
     }
 
     decide() {
@@ -143,7 +149,32 @@ class Man {
     }
 
     bringIntoTheWorld() {
-        return null;
+        this.energy -= Math.round(this.threshold * reproductionCost);
+
+        const mutate = (value, mRate) => {
+            const mutation = 1 + mRate * (Math.random() - 0.5);
+            return mutation * value;
+        };
+
+        const childWeights = this.weights.map(row => 
+            row.map(w => w + this.mutationRate * (Math.random() - 0.5))
+        );
+
+        const mRate = this.mutationRate;
+
+        const maxVx = Math.min(maxMaxVx, Math.max(minMaxVx, mutate(this.maxVx, mRate)));
+        const maxVy = Math.min(maxMaxVy, Math.max(minMaxVy, mutate(this.maxVy, mRate)));
+        const movementEnergyCost = Math.max(minMovementEnergyCost, mutate(this.movementEnergyCost, mRate));
+        const threshold = Math.max(minThreshold, mutate(this.threshold, mRate));
+        const mutationRate = Math.max(minMutationRate, mutate(this.mutationRate, rateMutationRate));
+
+        let child = new Man(
+            this.x, this.y, 0, 0,
+            maxVx, maxVy, childWeights,
+            Math.round(this.energy * reproductionCost),
+            movementEnergyCost, threshold, mutationRate
+        );
+        child.comeIntoTheWorld();
     }
 
     goOutOfTheWorld() {
