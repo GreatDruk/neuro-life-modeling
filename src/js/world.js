@@ -60,7 +60,7 @@ function startThePassageOfTime() {
     ctxEntity.clearRect(0, 0, entity.width, entity.height);
 
     frameCnt++;
-    if (frameCnt == foodSpawnPeriod) {
+    if (frameCnt >= foodSpawnPeriod) {
         frameCnt = 0;
         spawnFood(minFoodValue, maxFoodValue);
     }
