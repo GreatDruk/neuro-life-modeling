@@ -1,17 +1,28 @@
 class Man {
     constructor(
-        x=10, y=10, vx=0, vy=0,
-        energy=700, movementEnergyCost=1,
+        x=10, y=10, vx=0, vy=0, maxVx=1, maxVy=1,
+        weights=null, energy=800, movementEnergyCost=1, threshold=1500,
         width=15, height=25, round=5,
         lineWidth=1, fillColor="#8c00a9", strokeColor="#000"
     ) {
         this.isAlive = true;
+        this.closestFoodX = 0;
+        this.closestFoodY = 0;
+
         this.x = x;
         this.y = y;
         this.vx = vx;
         this.vy = vy;
+        this.maxVx = maxVx;
+        this.maxVy = maxVy;
+        this.weights = weights || [
+            [Math.random() * 10 - 5, Math.random() * 10 - 5],
+            [Math.random() * 10 - 5, Math.random() * 10 - 5],
+            [Math.random() * 2 - 1, Math.random() * 2 - 1]
+        ];
         this.energy = energy;
         this.movementEnergyCost = movementEnergyCost;
+        this.threshold = threshold;
 
         this.width = width;
         this.height = height;
@@ -34,6 +45,35 @@ class Man {
         ctxEntity.roundRect(this.x, this.y, this.width, this.height, this.round);
         ctxEntity.fill();
         ctxEntity.stroke();
+    }
+
+    think() {
+        this.searchForFood();
+
+        const decision = this.decide();
+
+        this.vx = decision[0] * this.maxVx;
+        this.vy = decision[1] * this.maxVy;
+
+        this.flight();
+    }
+
+    decide() {
+        let decideX = 0;
+        let decideY = 0;
+
+        const info = [
+            this.closestFoodX / entity.width,
+            this.closestFoodY / entity.height,
+            this.energy / this.threshold
+        ];
+
+        for (let i = 0; i < info.length; i++) {
+            decideX += this.weights[i][0] * info[i];
+            decideY += this.weights[i][1] * info[i];
+        }
+
+        return [Math.tanh(decideX), Math.tanh(decideY)]
     }
 
     flight() {
@@ -60,31 +100,44 @@ class Man {
     }
 
     searchForFood() {
+        this.closestFoodX = 0;
+        this.closestFoodY = 0;
+
         let minDistSq = Infinity;
-        let closestFood = -1;
+        let closestFoodX = 0;
+        let closestFoodY = 0;
+        let closestFoodInd = -1;
 
         for (let i = 0; i < foods.length; i++) {
-            const dx = this.x - foods[i].x;
-            const dy = this.y - foods[i].y;
+            const dx = (foods[i].x + foods[i].width / 2) - (this.x + this.width / 2);
+            const dy = (foods[i].y + foods[i].height / 2) - (this.y + this.height / 2);
             const distSq = dx * dx + dy * dy;
 
             if (distSq < minDistSq) {
                 minDistSq = distSq;
-                closestFood = i;
+                closestFoodInd = i;
+                closestFoodX = dx;
+                closestFoodY = dy;
             }
         }
 
-        if (closestFood !== -1) {
+        if (closestFoodInd !== -1) {
             const minDist = Math.sqrt(minDistSq);
 
-            if (2 * minDist < this.width + foods[closestFood].width) {
-                this.eat(closestFood); 
+            this.closestFoodX = closestFoodX;
+            this.closestFoodY = closestFoodY;
+
+            if (minDist < 1.5 * foods[closestFoodInd].width) {
+                this.eat(closestFoodInd); 
             }
         }
     }
 
     eat(index) {
         this.energy += foods[index].foodValue;
+        this.closestFoodX = 0;
+        this.closestFoodY = 0;
+
         foods.splice(index, 1);
         redrawItems();
     }

@@ -68,8 +68,7 @@ function startThePassageOfTime() {
     population = population.filter(man => man.isAlive);
 
     population.forEach(man => {
-        man.flight();
-        man.searchForFood();
+        man.think();
         man.be();
     })
 
