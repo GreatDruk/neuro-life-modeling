@@ -56,6 +56,17 @@ generateWorld(
 );
 
 
+function repopulateWorld(weightsHistory) {
+    for (let i = 0; i < weightsHistory.length; i++) {
+        let x = getRandomInt(margin, entity.width - margin);
+        let y = getRandomInt(margin, entity.height - margin);
+
+        let man = new Man(x, y, weightsHistory[i]);
+        man.comeIntoTheWorld();
+    }
+}
+
+
 function startThePassageOfTime() {
     ctxEntity.clearRect(0, 0, entity.width, entity.height);
 
@@ -67,10 +78,14 @@ function startThePassageOfTime() {
 
     population = population.filter(man => man.isAlive);
 
-    population.forEach(man => {
-        man.think();
-        man.be();
-    })
+    if (population.length) {
+        population.forEach(man => {
+            man.think();
+            man.be();
+        })
+    } else {
+        repopulateWorld(recentWeightsHistory);
+    }
 
     requestAnimationFrame(startThePassageOfTime);
 }

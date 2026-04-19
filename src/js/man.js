@@ -1,7 +1,7 @@
 class Man {
     constructor(
-        x=10, y=10, vx=0, vy=0, maxVx=1, maxVy=1,
-        weights=null, energy=1000, movementEnergyCost=0.5,
+        x=10, y=10, weights=null, vx=0, vy=0, maxVx=1, maxVy=1,
+        energy=1000, movementEnergyCost=1,
         threshold=1800, mutationRate=0.1,
         width=15, height=25, round=5,
         lineWidth=1, fillColor="#8c00a9", strokeColor="#000"
@@ -16,10 +16,11 @@ class Man {
         this.vy = vy;
         this.maxVx = maxVx;
         this.maxVy = maxVy;
+
         this.weights = weights || [
             [Math.random() * 2 - 1, Math.random() * 2 - 1],
             [Math.random() * 2 - 1, Math.random() * 2 - 1],
-            [Math.random() * 2 - 1, Math.random() * 2 - 1]
+            [Math.random() - 0.5, Math.random() - 0.5]
         ];
         this.energy = energy;
         this.movementEnergyCost = movementEnergyCost;
@@ -169,8 +170,8 @@ class Man {
         const mutationRate = Math.max(minMutationRate, mutate(this.mutationRate, rateMutationRate));
 
         let child = new Man(
-            this.x, this.y, 0, 0,
-            maxVx, maxVy, childWeights,
+            this.x, this.y, childWeights,
+            0, 0, maxVx, maxVy,
             this.energy, movementEnergyCost,
             threshold, mutationRate
         );
@@ -179,5 +180,7 @@ class Man {
 
     goOutOfTheWorld() {
         this.isAlive = false;
+        recentWeightsHistory[weightsHistIndex] = this.weights;
+        weightsHistIndex = (weightsHistIndex + 1) % initPopulationSize;
     }
 }

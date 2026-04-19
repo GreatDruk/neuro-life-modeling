@@ -16,6 +16,9 @@ const margin = 20;
 const initMinFoodValue = 300;
 const initMaxFoodValue = 1200;
 
+let recentWeightsHistory = new Array(initPopulationSize);
+let weightsHistIndex = 0;
+
 let minFoodValue = initMinFoodValue;
 let maxFoodValue = initMaxFoodValue;
 
