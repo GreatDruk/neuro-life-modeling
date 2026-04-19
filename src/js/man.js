@@ -72,7 +72,7 @@ class Man {
         const info = [
             this.closestFoodX / entity.width,
             this.closestFoodY / entity.height,
-            this.energy / this.threshold
+            1 - this.energy / this.threshold
         ];
 
         for (let i = 0; i < info.length; i++) {
