@@ -1,8 +1,8 @@
 class Man {
     constructor(
         x=10, y=10, vx=0, vy=0, maxVx=1, maxVy=1,
-        weights=null, energy=800, movementEnergyCost=1,
-        threshold=1500, mutationRate=0.1,
+        weights=null, energy=1000, movementEnergyCost=0.5,
+        threshold=1800, mutationRate=0.1,
         width=15, height=25, round=5,
         lineWidth=1, fillColor="#8c00a9", strokeColor="#000"
     ) {
@@ -17,8 +17,8 @@ class Man {
         this.maxVx = maxVx;
         this.maxVy = maxVy;
         this.weights = weights || [
-            [Math.random() * 10 - 5, Math.random() * 10 - 5],
-            [Math.random() * 10 - 5, Math.random() * 10 - 5],
+            [Math.random() * 2 - 1, Math.random() * 2 - 1],
+            [Math.random() * 2 - 1, Math.random() * 2 - 1],
             [Math.random() * 2 - 1, Math.random() * 2 - 1]
         ];
         this.energy = energy;
@@ -171,8 +171,8 @@ class Man {
         let child = new Man(
             this.x, this.y, 0, 0,
             maxVx, maxVy, childWeights,
-            Math.round(this.energy * reproductionCost),
-            movementEnergyCost, threshold, mutationRate
+            this.energy, movementEnergyCost,
+            threshold, mutationRate
         );
         child.comeIntoTheWorld();
     }
